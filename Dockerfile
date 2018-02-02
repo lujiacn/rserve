@@ -1,7 +1,36 @@
 # vim:set ft=dockerfile
-FROM alpine:3.7
-RUN apk add --update --no-cache musl-utils build-base R R-dev cairo-dev grep
-RUN apk add --no-cache gcc musl-dev libxml2-dev curl-dev openssl-dev
+# Dotcloud ubuntu image
+FROM ubuntu:trusty
+MAINTAINER lujiacn
+
+# Install latest R
+RUN sh -c 'echo "deb http://cran.rstudio.com/bin/linux/ubuntu trusty/" >> /etc/apt/sources.list'
+# add the public keys:
+RUN gpg --keyserver keyserver.ubuntu.com --recv-key E084DAB9
+RUN gpg -a --export E084DAB9 | apt-key add -
+ 
+# Update and install
+RUN apt-get update && apt-get install -y \
+		r-base \
+		r-recommended \
+		r-base-dev \
+		libcurl4-gnutls-dev \
+		libxml2-dev \
+		libmime-base64-urlsafe-perl \
+		libdigest-hmac-perl \
+		libdigest-sha-perl \
+		libssl-dev \
+		libapparmor1 \
+		libcairo2-dev \
+		wget
+
+# log R version
+RUN R --version
+
+#FROM ubuntu:trusty
+#RUN apk add --update --no-cache musl-utils build-base R R-dev cairo-dev grep
+#RUN apk add --no-cache gcc musl-dev libxml2-dev curl-dev openssl-dev
+#RUN apk add --no-cache automake libtool m4 autoconf linux-headers
 
 #FROM       rserve:latest
 
@@ -64,7 +93,6 @@ RUN R -e 'if (!require("raster"))       {install.packages("raster",       repos=
 RUN R -e 'if (!require("reshape2"))     {install.packages("reshape2",     repos="https://cran.ism.ac.jp",dependencies=TRUE) };'
 RUN R -e 'if (!require("rjson"))        {install.packages("rjson",        repos="https://cran.ism.ac.jp",dependencies=TRUE) };'
 RUN R -e 'if (!require("scales"))       {install.packages("scales",       repos="https://cran.ism.ac.jp",dependencies=TRUE) };'
-RUN R -e 'if (!require("shiny"))        {install.packages("shiny",        repos="https://cran.ism.ac.jp",dependencies=TRUE) };'
 RUN R -e 'if (!require("sp"))           {install.packages("sp",           repos="https://cran.ism.ac.jp",dependencies=TRUE) };'
 RUN R -e 'if (!require("ssanv"))        {install.packages("ssanv",        repos="https://cran.ism.ac.jp",dependencies=TRUE) };'
 RUN R -e 'if (!require("stringi"))      {install.packages("stringi",      repos="https://cran.ism.ac.jp",dependencies=TRUE) };'
@@ -106,7 +134,8 @@ RUN R -e 'if (!require("survival"))     {install.packages("survival",     repos=
 RUN R -e 'if (!require("tcltk"))        {install.packages("tcltk",        repos="https://cran.ism.ac.jp",dependencies=TRUE) };'
 RUN R -e 'if (!require("tools"))        {install.packages("tools",        repos="https://cran.ism.ac.jp",dependencies=TRUE) };'
 RUN R -e 'if (!require("utils"))        {install.packages("utils",        repos="https://cran.ism.ac.jp",dependencies=TRUE) };'
-RUN R -e 'if (!require("ggvis"))        {devtools::install_github(lujiacn/ggvis)};'
+RUN R -e 'if (!require("shiny"))        {install.packages("shiny",        repos="https://cran.ism.ac.jp",dependencies=TRUE) };'
+RUN R -e 'if (!require("ggvis"))        {devtools::install_github("lujiacn/ggvis")};'
 
 EXPOSE     6311
 ENTRYPOINT R -e "Rserve::run.Rserve(remote=TRUE)"
