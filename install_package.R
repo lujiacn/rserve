@@ -99,4 +99,4 @@ if (!require("tcltk"))        {install.packages("tcltk",        repos="https://c
 if (!require("tools"))        {install.packages("tools",        repos="https://cran.ism.ac.jp",dependencies=TRUE) };
 if (!require("utils"))        {install.packages("utils",        repos="https://cran.ism.ac.jp",dependencies=TRUE) };
 if (!require("shiny"))        {install.packages("shiny",        repos="https://cran.ism.ac.jp",dependencies=TRUE) };
-if (!require("ggvis"))        {devtools::install_github("lujiacn/ggvis")};
+if (!require("ggvis"))        {devtools::install_github("lujiacn/ggvis", ref="vega-2.x")};
