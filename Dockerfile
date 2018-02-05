@@ -21,7 +21,8 @@ RUN apt-get update && apt-get install -y \
         libssl-dev \
         libapparmor1 \
         libcairo2-dev \
-        wget
+        wget \
+        pandoc
 
 # log R version
 RUN R --version
