@@ -30,5 +30,9 @@ RUN R --version
 ADD install_package.R install_package.R
 RUN Rscript install_package.R
 
+# add daily clean cron
+ADD clean_tmp /etc/cron.daily/clean_tmp
+RUN chmod +x /cron.daily/clean_tmp
+
 EXPOSE     6311
 ENTRYPOINT R -e "Rserve::run.Rserve(remote=TRUE)"
