@@ -7,7 +7,7 @@ RUN sh -c 'echo "deb http://cran.rstudio.com/bin/linux/ubuntu trusty/" >> /etc/a
 # add the public keys:
 RUN gpg --keyserver keyserver.ubuntu.com --recv-key E084DAB9
 RUN gpg -a --export E084DAB9 | apt-key add -
- 
+
 # Update and install
 RUN apt-get update && apt-get install -y \
         r-base \
@@ -24,6 +24,8 @@ RUN apt-get update && apt-get install -y \
         wget \
         pandoc
 
+RUN apt-get clean
+
 # log R version
 RUN R --version
 
@@ -35,6 +37,9 @@ RUN Rscript install_package.R
 ADD  clean_tmp clean_tmp
 RUN chmod +x clean_tmp
 RUN mv clean_tmp /etc/cron.daily/
+
+# clean
+RUN rm -rf /tmp/*
 
 EXPOSE     6311
 ENTRYPOINT R -e "Rserve::run.Rserve(remote=TRUE)"
