@@ -1,5 +1,5 @@
 # vim:set ft=dockerfile
-FROM ubuntu:trusty
+FROM ubuntu:latest
 MAINTAINER lujiacn@gmail.com
 
 RUN sh -c 'echo "deb http://cran.rstudio.com/bin/linux/ubuntu trusty/" >> /etc/apt/sources.list'
