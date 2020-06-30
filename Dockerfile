@@ -2,7 +2,7 @@
 FROM ubuntu:18.04
 MAINTAINER lujiacn@gmail.com
 
-RUN apt-get install gnupg
+RUN apt-get update && apt-get install -y gnupg
 
 RUN sh -c 'echo "deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran40/" >> /etc/apt/sources.list'
 #RUN apt-key adv --keyserver keyserver.ubuntu.com --keyserver-options  http-proxy=http://192.168.65.1:3128 --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
