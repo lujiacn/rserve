@@ -1,11 +1,16 @@
 # vim:set ft=dockerfile
-FROM ubuntu:latest
+FROM ubuntu:18.04
 MAINTAINER lujiacn@gmail.com
 
-RUN sh -c 'echo "deb http://cran.rstudio.com/bin/linux/ubuntu trusty/" >> /etc/apt/sources.list'
-RUN gpg --keyserver keyserver.ubuntu.com --recv-key E084DAB9
-RUN gpg -a --export E084DAB9 | apt-key add -
+RUN apt-get install gnupg
 
+RUN sh -c 'echo "deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran40/" >> /etc/apt/sources.list'
+#RUN apt-key adv --keyserver keyserver.ubuntu.com --keyserver-options  http-proxy=http://192.168.65.1:3128 --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
+RUN apt-key adv --keyserver keyserver.ubuntu.com --keyserver-options  --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
+#RUN gpg --keyserver keyserver.ubuntu.com --recv-key E084DAB9
+#RUN gpg -a --export E084DAB9 | apt-key add -
+
+RUN apt install ca-certificates
 RUN apt-get update && apt-get install -y \
         r-base \
         r-recommended \
@@ -19,13 +24,14 @@ RUN apt-get update && apt-get install -y \
         libapparmor1 \
         libcairo2-dev \
         wget \
+        cron \
         pandoc
 
 RUN rm -rf /var/lib/apt/lists/*
 
 # install R packages
-COPY install_package.R clean_tmp ./
-RUN Rscript install_package.R
+COPY installed.R clean_tmp start.R Rserv.conf ./
+RUN Rscript installed.R
 RUN chmod +x clean_tmp \
     & mv clean_tmp /etc/cron.daily/ \
     & rm -rf /tmp/*
