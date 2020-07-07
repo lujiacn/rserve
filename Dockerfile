@@ -1,6 +1,7 @@
 # vim:set ft=dockerfile
 FROM ubuntu:18.04
 MAINTAINER lujiacn@gmail.com
+ENV DEBIAN_FRONTEND=noninteractive 
 
 RUN apt-get update && apt-get install -y gnupg
 
