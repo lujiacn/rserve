@@ -37,7 +37,7 @@ RUN R CMD INSTALL Rserve_1.8-7.tar.gz
 RUN Rscript installed.R
 RUN chmod +x clean_tmp \
     & mv clean_tmp /etc/cron.daily/ \
-    & rm -rf /tmp/*
+    & rm -rf /tmp/* \
     & rm Rserve_1.8-7.tar.gz
 
 EXPOSE     6311
