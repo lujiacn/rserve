@@ -6,7 +6,6 @@ if (!require("RColorBrewer")) {install.packages("RColorBrewer", repos="https://c
 if (!require("RCurl")) {install.packages("RCurl", repos="https://cran.ism.ac.jp") }; 
 if (!require("Rcpp")) {install.packages("Rcpp", repos="https://cran.ism.ac.jp") }; 
 if (!require("RgoogleMaps")) {install.packages("RgoogleMaps", repos="https://cran.ism.ac.jp") }; 
-if (!require("Rserve")) {install.packages("Rserve", repos="https://cran.ism.ac.jp") }; 
 if (!require("askpass")) {install.packages("askpass", repos="https://cran.ism.ac.jp") }; 
 if (!require("assertthat")) {install.packages("assertthat", repos="https://cran.ism.ac.jp") }; 
 if (!require("backports")) {install.packages("backports", repos="https://cran.ism.ac.jp") }; 

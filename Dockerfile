@@ -32,11 +32,13 @@ RUN apt-get update && apt-get install -y \
 RUN rm -rf /var/lib/apt/lists/*
 
 # install R packages
-COPY installed.R clean_tmp start.R Rserv.conf ./
+COPY installed.R clean_tmp start.R Rserv.conf Rserve_1.8-7.tar.gz ./
+RUN R CMD INSTALL Rserve_1.8-7.tar.gz
 RUN Rscript installed.R
 RUN chmod +x clean_tmp \
     & mv clean_tmp /etc/cron.daily/ \
     & rm -rf /tmp/*
+    & rm Rserve_1.8-7.tar.gz
 
 EXPOSE     6311
 ENTRYPOINT R -e "Rserve::run.Rserve(remote=TRUE)"
