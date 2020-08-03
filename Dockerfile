@@ -7,10 +7,7 @@ RUN apt-get update && apt-get install -y gnupg
 
 # install cran-r40
 RUN sh -c 'echo "deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran40/" >> /etc/apt/sources.list'
-#RUN apt-key adv --keyserver keyserver.ubuntu.com --keyserver-options  http-proxy=http://192.168.65.1:3128 --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
-#RUN gpg --keyserver keyserver.ubuntu.com --recv-key E084DAB9
-#RUN gpg -a --export E084DAB9 | apt-key add -
 
 RUN apt install -y ca-certificates
 RUN apt-get update && apt-get install -y \
@@ -26,17 +23,19 @@ RUN apt-get update && apt-get install -y \
         libapparmor1 \
         libcairo2-dev \
         wget \
+        vim \
         cron \
         pandoc
 
 RUN rm -rf /var/lib/apt/lists/*
 
 # install R packages
-COPY installed.R clean_tmp start.R Rserv.conf Rserve_1.8-7.tar.gz ./
+COPY installed.R clean_tmp crontab start.R Rserv.conf Rserve_1.8-7.tar.gz ./
 RUN R CMD INSTALL Rserve_1.8-7.tar.gz
 RUN Rscript installed.R
 RUN chmod +x clean_tmp \
     & mv clean_tmp /etc/cron.daily/ \
+    & mv crontab /etc/ \
     & rm -rf /tmp/* \
     & rm Rserve_1.8-7.tar.gz
 
