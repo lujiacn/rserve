@@ -3,11 +3,15 @@ FROM ubuntu:18.04
 MAINTAINER lujiacn@gmail.com
 ENV DEBIAN_FRONTEND=noninteractive 
 
-RUN apt-get update && apt-get install -y gnupg
+RUN apt-get update && apt-get install -y gnupg wget
 
 # install cran-r40
 RUN sh -c 'echo "deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran40/" >> /etc/apt/sources.list'
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
+# not work behind cooperate proxy
+# RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
+# manual download and save to cran_source.key, add by apt-key then
+COPY cran_source.key /root/
+RUN apt-key add /root/cran_source.key
 
 RUN apt install -y ca-certificates
 RUN apt-get update && apt-get install -y \
@@ -22,7 +26,6 @@ RUN apt-get update && apt-get install -y \
         libssl-dev \
         libapparmor1 \
         libcairo2-dev \
-        wget \
         vim \
         cron \
         pandoc
@@ -39,4 +42,4 @@ RUN chmod +x clean_tmp \
     & rm Rserve_1.8-7.tar.gz
 
 EXPOSE     6311
-ENTRYPOINT R -e "Rserve::run.Rserve(remote=TRUE)"
+CMD R -e "Rserve::run.Rserve(remote=TRUE)"
